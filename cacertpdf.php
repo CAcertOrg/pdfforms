@@ -33,7 +33,7 @@ define('WEB', 'http://www.cacert.org');
 define('CCA', "CAcertCommunityAgreement"); // default policy to print
 define('OAP', "OrganisationAssurancePolicy");
 define('POLICY','policy/'); // default polciy doc directory
-define('EXT','.php'); // default polciy doc extention, should be html
+define('EXT','.html'); // default polciy doc extention, should be html
 /* finger print CAcert Root Key */ // should obtain this automatically
 define('CLASS1_SHA1','135C EC36 F49C B8E9 3B1A B270 CD80 8846 76CE 8F33');
 define('CLASS3_SHA1','AD7C 3F64 FC44 39FE F4E9 0BE8 F47C 6CFA 8AAD FDCE');
