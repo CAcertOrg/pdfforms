@@ -203,7 +203,7 @@ function COAPOrganisationStatement($pdf1, $organisation) {
 	$width[0]=5;
 	$width[1]=185;
 	$strga[0]='q'; // checkbox
-	$strga[1] =_('I agree to the CAcert Community Agreement').'.';
+	$strga[1] =_('I agree to the CAcert Community Agreement on behalf of the organisation').'.';
 	TableRow($pdf1, $cols, $width, $border, $strga, $fontsize, $fonttype, $fillcolor, $align);
 
 	$strga[0]='q'; // checkbox
