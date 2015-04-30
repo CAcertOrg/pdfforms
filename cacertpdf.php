@@ -26,20 +26,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 require_once('lib/tfpdf.php');
 require_once("lib/l10n.php");
 
-define('FONT','Freesans');  
+define('FONT','Freesans');
 
 define('POBOX','CAcert Inc. - P.O. Box 66 - Oatley NSW 2223 - Australia');
 define('WEB', 'http://www.cacert.org');
 define('CCA', "CAcertCommunityAgreement"); // default policy to print
-define('OAP', "OrganisationAssurancePolicy"); 
+define('OAP', "OrganisationAssurancePolicy");
 define('POLICY','policy/'); // default polciy doc directory
-define('EXT','.php'); // default polciy doc extention, should be html
+define('EXT','.html'); // default polciy doc extention, should be html
 /* finger print CAcert Root Key */ // should obtain this automatically
 define('CLASS1_SHA1','135C EC36 F49C B8E9 3B1A B270 CD80 8846 76CE 8F33');
 define('CLASS3_SHA1','AD7C 3F64 FC44 39FE F4E9 0BE8 F47C 6CFA 8AAD FDCE');
 // next two are not used on the form
 define('CLASS1_MD5','A6:1B:37:5E:39:0D:9C:36:54:EE:BD:20:31:46:1F:6B');
-define('CLASS3_MD5','F7:25:12:82:4E:67:B5:D0:8D:92:B7:7C:0B:86:7A:42');	
+define('CLASS3_MD5','F7:25:12:82:4E:67:B5:D0:8D:92:B7:7C:0B:86:7A:42');
 
 //colour settings
 define('BLACK','0, 0, 0');
@@ -50,7 +50,7 @@ define('GREYB','130, 130, 130');
 define('ERROR',_('Error'));
 
 
-define('LOGFILE',"./log.txt"); 
+define('LOGFILE',"./log.txt");
 
 define("FPDF_FONTPATH","font/");
 
@@ -127,11 +127,11 @@ if (isset($_GET['type'])){
 }
 if (isset($_GET['date'])){
 	$date = $_GET['date'];
-}   
+}
 if (isset($_GET['assurername'])){
 	$assurername = $_GET['assurername'];
 }
-     
+
 //++++ COAP form ++++
 if (isset($_GET['name'])){
 	$organisation['orgname'] = $_GET['name'];
@@ -144,7 +144,7 @@ if (isset($_GET['state'])){
 	}
 if (isset($_GET['country'])){
 	$organisation['orgcountry'] = $_GET['country'];
-}   
+}
 if (isset($_GET['orgtype'])){
 	$organisation['orgtype'] = $_GET['orgtype'];
 }
@@ -212,14 +212,14 @@ if (isset($_GET['admin2email'])){
 
 if (isset($_GET['director'])){
 	$organisation['orgceo'] = $_GET['director'];
-} 
+}
 if (isset($_GET['email'])){
 	$organisation['orgceomail'] = $_GET['email'];
-} 
+}
 if (isset($_GET['phone']))
 {
 	$organisation['orgceophone'] = $_GET['phone'];
-} 
+}
 if (isset($_GET['date']))
 {
 	$organisation['orgceodate'] = $_GET['date'];
@@ -262,14 +262,14 @@ if (isset($_GET['policy1'])){
 if(file_exists(LOGFILE)){
 	unlink(LOGFILE);
 }
- 
+
 // Settings for language
 if (isset($_GET['lang'])){
 	L10n::set_translation($_GET['lang']);
 }else {
 	L10n::set_translation('en');
 }
-L10n::init_gettext("pdfforms");        
+L10n::init_gettext("pdfforms");
 
 //Test values
 if ($_GET['fullname']=='test'){
@@ -293,15 +293,15 @@ if ($_GET['fullname']=='test'){
 	$organisation['admin2'] ="Bob";
 	$organisation['adminmail2'] ="bob@heissenadel";
 
-	$organisation['orgceo'] = "Charles"; 
+	$organisation['orgceo'] = "Charles";
 	$organisation['orgceomail'] = "charles@heissenadel";
 	$organisation['orgceophone'] = "+31 773270066";
-	$organisation['orgceodate'] = "2012-07-22"; 
+	$organisation['orgceodate'] = "2012-07-22";
 
 	$organisation['assurer'] = "My O. Assurer-Name";
 	$organisation['assurerdate'] = "2012-07-22";
 	$organisation['assurermail'] = "Assurer@cacert.org";
-        
+
 	$assureraddress[0] ="Bob";
 	$assureraddress[1] ="Avenue1";
 	$assureraddress[2] ="Condo 123";
@@ -316,22 +316,22 @@ if ($_GET['fullname']=='test'){
 
 class caPDF extends tFPDF{
 	var $htmlSeite=0;
-	// Overload  Footer() Method 
+	// Overload  Footer() Method
 	function Footer(){
-		if ($this->pdftype=="html"){ 
+		if ($this->pdftype=="html"){
 			// place above lower page margin
-			$this->SetY(-7); //-15 
-			// define font 
-			$this->SetFont(FONT,'I',8);  
-			// centered placement of page number 
+			$this->SetY(-7); //-15
+			// define font
+			$this->SetFont(FONT,'I',8);
+			// centered placement of page number
 			$seite=$this->PageNo()-$this->htmlSeite;
-			$this->Cell(0,10,'Page '.$seite,0,0,'C');  
+			$this->Cell(0,10,'Page '.$seite,0,0,'C');
 		}
 	}
 }
 
 
-//start form          
+//start form
 // $pdf = new tFPDF();
 $pdf = new caPDF();
 
@@ -341,7 +341,7 @@ $pdf->AddFont('FONT','B','FreeSansBold.ttf',true);
 $pdf->AddFont('FONT','BI','FreeSansBoldOblique.ttf',true);
 $pdf->AddFont('FONT','I','FreeSansOblique.ttf',true);
 $pdf->AddFont('PierreDingbats','','PierreDingbats.ttf',true);
-    
+
 $pdf->AddPage();
 
 // Add a Unicode font (uses UTF-8)
@@ -358,13 +358,13 @@ if ($type=='cap'){
 	CAPAssurerInfo($pdf, $assurername, $date);
 	CAPFooter($pdf);
 	if ($assureename=="" and $assurername=""){
-		$output='cacert cap blanko.pdf'; 
+		$output='cacert cap blanko.pdf';
 	}
 	if ($assureename=="" and $output=='cacert.pdf'){
-		$output='cacert cap assurer.pdf'; 
-	} 
+		$output='cacert cap assurer.pdf';
+	}
 	if ($assurername=="" and $output=='cacert.pdf'){
-		$output='cacert cap assuree.pdf'; 
+		$output='cacert cap assuree.pdf';
 	}
 }
 
@@ -381,36 +381,36 @@ if ($type=='coap'){
 	COAPFooter($pdf,1,$organisation);
 	//second page with witness statement
 	$pdf->AddPage();
-	COAPWitnessStatemet($pdf, $organisation); 
-	COAPWitnessStatemet($pdf, $organisation); 
+	COAPWitnessStatemet($pdf, $organisation);
+	COAPWitnessStatemet($pdf, $organisation);
 	COAPFooter($pdf,2,$organisation);
-	html2pdf($pdf,WEB."/".POLICY.CCA.".php","CAcert Community Agreement" ); 
-	html2pdf($pdf,WEB."/".POLICY.OAP.".php","Organisation Assurance Policy" );    
+	html2pdf($pdf,WEB."/".POLICY.CCA.".html","CAcert Community Agreement" );
+	html2pdf($pdf,WEB."/".POLICY.OAP.".html","Organisation Assurance Policy" );
 	$output='cacert coap '.$organisation['orgname'].'.pdf';
 }
 //create TTP CAP form
 if ($type=='ttp'){
 	include('include/ttpcap.php');
 	//needs to be adjusted when new countries come in
-	include('include/ttpcapus.php');    
+	include('include/ttpcapus.php');
 	FileProperties($pdf,"TTP","Trusted Third Party Assurance");
 	TTPCAPFirstPage($pdf, $assureraddress);
 	TTPCAPHeader($pdf);
-	TTPAssureeInfo($pdf, $assureename , $dob , $email);    
+	TTPAssureeInfo($pdf, $assureename , $dob , $email);
 	TTPInfo($pdf);
 	TTPAssurer($pdf,$assurername);
 	TTPAdvice($pdf);
 	TTPAdviceFooter($pdf);
-	html2pdf($pdf,WEB."/".POLICY.CCA.".php","CAcert Community Agreement" );   
-	$output='cacert ttpcap '.$assureename.'.pdf'; 
+	html2pdf($pdf,WEB."/".POLICY.CCA.".html","CAcert Community Agreement" );
+	$output='cacert ttpcap '.$assureename.'.pdf';
 }
 
 if ($type=='test'){
 	testoutput($pdf);
-	$output='test.pdf'; 
-} 
+	$output='test.pdf';
+}
 
-if ($output=='cacert.pdf'){ 
+if ($output=='cacert.pdf'){
 	die(printF(_('%s: not correct data sent (p1)'),Error));
 }
 
@@ -418,7 +418,7 @@ $pdf->Output($output,'D');
 
 //test
 function testoutput($pdf1){
-	html2pdf($pdf1,WEB."/".POLICY.CCA.".php","CAcert Community Agreement" );   
+	html2pdf($pdf1,WEB."/".POLICY.CCA.".html","CAcert Community Agreement" );
 }
 
 function html2pdf($pdf1, $url, $title, $title2=""){
@@ -429,12 +429,12 @@ function html2pdf($pdf1, $url, $title, $title2=""){
 	fclose($fp);
 	$pdf1->htmlSeite=$pdf1->PageNo();
 	$pdf1->AddPage();
-	$pdf1->pdftype="html";    
-	WriteHTML($strContent,$pdf1);    
-} 
+	$pdf1->pdftype="html";
+	WriteHTML($strContent,$pdf1);
+}
 
 
-// basic functions  
+// basic functions
 function TableRow($pdf2, $colums, $width, $border, $strings, $fontsize, $fonttype, $color, $align) {
 	//draws a table row
 	$posSX=$pdf2->GetX();
@@ -443,23 +443,23 @@ function TableRow($pdf2, $colums, $width, $border, $strings, $fontsize, $fonttyp
 	$posXC=$posX;
 	$height=5;
 	//calculate hight of table row
-	for($i=0;$i<$colums;$i++){   
+	for($i=0;$i<$colums;$i++){
 		$posXA[$i]=$posXC;
 		$posXC+=$width[$i];
 		$pdf2->SetFont(FONT,$fonttype[$i],$fontsize[$i]);
 		$height1=GetMultiCellHeight($pdf2, $strings[$i], $width[$i]-1) ;
 		if ($height<$height1){
 			$height=$height1;
-		} 
-//		writelog("Height: ".$strings[0].' '. $height.' '. $height1);  
+		}
+//		writelog("Height: ".$strings[0].' '. $height.' '. $height1);
 	}
 	//Draw background
-	for($i=0;$i<$colums;$i++){   
+	for($i=0;$i<$colums;$i++){
 		if ($color[$i]!='255, 255, 255') {
 			$pdf2->SetFillColor($color[$i]);
 			$pdf2->Rect($posXA[$i], $posY, $width[$i], $height,'F');
-		} 
-//		writelog("Columns: ".$strings[0].' '.$posXA[$i].' '. $posY.' '. $width[$i].' '. $height); 
+		}
+//		writelog("Columns: ".$strings[0].' '.$posXA[$i].' '. $posY.' '. $width[$i].' '. $height);
 	}
 	//write text in multicell
 	for($i=0;$i<$colums;$i++){
@@ -471,7 +471,7 @@ function TableRow($pdf2, $colums, $width, $border, $strings, $fontsize, $fonttyp
 		} else {
 			$pdf2->SetFont(FONT,$fonttype[$i],$fontsize[$i]);
 		}
-		$pdf2->MultiCell($width[$i], 5, $strings[$i], 0, $align[$i],0); 
+		$pdf2->MultiCell($width[$i], 5, $strings[$i], 0, $align[$i],0);
 		$posXA[$i]=$posX;
 		$posX +=$width[$i];
 	}
@@ -480,8 +480,8 @@ function TableRow($pdf2, $colums, $width, $border, $strings, $fontsize, $fonttyp
 	for($i=0;$i<$colums;$i++){
 		if($border[$i]==1) {
 			$pdf2->Rect($posX, $posY, $width[$i], $height);
-//			writelog("Full border: ".$strings[$i].' '.$posX.' '. $posY.' '. $width[$i].' '. $height); 
-		} 
+//			writelog("Full border: ".$strings[$i].' '.$posX.' '. $posY.' '. $width[$i].' '. $height);
+		}
 
 		$b = strpos($border[$i],'B');
 		if ($b === false) {
@@ -506,11 +506,11 @@ function TableRow($pdf2, $colums, $width, $border, $strings, $fontsize, $fonttyp
 		} else {
 			$pdf2->Line($posXA[$i]+ $width[$i], $posY, $posXA[$i] + $width[$i], $posY + $height);
 		}
-		$posX +=$width[$i];         
+		$posX +=$width[$i];
 	}
 
 	$pdf2->SetX($posSX);
-	$pdf2->SetY($posY + $height);         
+	$pdf2->SetY($posY + $height);
 }
 
  function FileProperties($pdf1,$type,$program){
@@ -521,7 +521,7 @@ function TableRow($pdf2, $colums, $width, $border, $strings, $fontsize, $fonttyp
 	$pdf1->SetTitle("CAcert ".$program." Programme");
 	$pdf1->SetCompression(true); // turn it off when more pperformance is needed
 }
- 
+
 function TableRowVariables(){
 	//initialise variables for table printing
 	$cols=11;
@@ -534,36 +534,36 @@ function TableRowVariables(){
 		$align[$i]='';
 	}
 }
- 
- function GetMultiCellHeight($pdf2, $string, $w) { 
+
+ function GetMultiCellHeight($pdf2, $string, $w) {
 	//problem is fontsize is larger then line hight
 	$stext =explode("\n",  $string);             //Devide into lines
 	$rows=0;
 	for ($i=0; $i<count($stext); $i++){
-		$str_length = $pdf2->GetStringWidth($stext[$i])+1;          
+		$str_length = $pdf2->GetStringWidth($stext[$i])+1;
 		$rows += ceil($str_length/ $w);
-//		writeLog($string."\n".$stext[$i]."\n".$str_length.' '.$w);           
+//		writeLog($string."\n".$stext[$i]."\n".$str_length.' '.$w);
 		$stext1 =explode(" ",  $stext[$i]);     //Devide into words
 		for ($j=0; $j<count($stext1); $j++){
-			$str_length = $pdf2->GetStringWidth($stext1[$j]);  //check if word is larger then width of MultiCell                 
+			$str_length = $pdf2->GetStringWidth($stext1[$j]);  //check if word is larger then width of MultiCell
 			if ($str_length > $w){
-				$rows += ceil($str_length/ $w)-1; 
-			} 
+				$rows += ceil($str_length/ $w)-1;
+			}
 		}
-	}  
-	$height = ($rows) * 5 ; 
-	return ($height > 5 ) ? $height :5;       
-} 
+	}
+	$height = ($rows) * 5 ;
+	return ($height > 5 ) ? $height :5;
+}
 
 function writelog($str) {
 	//writes data to a log file
 	if ($_GET['fullname']=='test'){
 		$save=fopen(LOGFILE,"a");
-		$entry = "".date("d.m.Y - H:i:s ").$str."\n"; 
-		fputs($save, $entry); 
+		$entry = "".date("d.m.Y - H:i:s ").$str."\n";
+		fputs($save, $entry);
 		fclose($save);
 	}
-} 
+}
 
 
-?>                         
+?>
